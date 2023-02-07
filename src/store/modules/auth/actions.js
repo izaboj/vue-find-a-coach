@@ -1,13 +1,13 @@
 let timer;
 export default {
   async login(context, payload) {
-    context.dispatch('auth', {
+    await context.dispatch('auth', {
       ...payload,
       mode: 'login',
     });
   },
   async signup(context, payload) {
-    context.dispatch('auth', {
+    await context.dispatch('auth', {
       ...payload,
       mode: 'signup',
     });
@@ -34,14 +34,14 @@ export default {
     const responseData = await response.json();
 
     if (!response.ok) {
-      const error = new Error(
+      console.log('not OK', responseData);
+      throw new Error(
         responseData.error.message || 'sth went worong during login request'
       );
-      throw error;
     }
 
-    // const expiresIn = +responseData.expiresIn * 1000;
-    const expiresIn = 5000;
+    const expiresIn = +responseData.expiresIn * 1000;
+    // const expiresIn = 5000;
     const expirationDate = new Date().getTime() + expiresIn;
 
     localStorage.setItem('token', responseData.idToken);
@@ -58,6 +58,7 @@ export default {
       userName: responseData.email,
     });
   },
+
   tryLogin(context) {
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');

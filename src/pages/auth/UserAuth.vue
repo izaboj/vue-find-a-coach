@@ -78,16 +78,16 @@ export default {
       };
       try {
         if (this.mode === 'signup') {
-          // sent request http
           await this.$store.dispatch('signup', actionPayload);
         } else {
           await this.$store.dispatch('login', actionPayload);
-          const redirectUrl = '/' + (this.$route.query.redirect || 'coaches');
-          this.$router.replace(redirectUrl);
         }
+        const redirectUrl = '/' + (this.$route.query.redirect || 'coaches');
+        this.$router.replace(redirectUrl);
       } catch (e) {
         this.error = e.message || 'sth went wrong during sign up new user';
       }
+
       this.isLoading = false;
     },
     switchAuthMode() {
